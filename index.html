@@ -3,26 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>project</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/index.js"></script>
+    <meta name="description" content="Online marketplace for organic Moringa products and natural remedies">
+    <title>Organic Moringa Marketplace | Natural Products & Remedies</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul class="nav-items">
-                <li>
-                    <a href="index.html">home</a>
-                </li>
-                <li>
-                    <a href="about.html">about</a>
-                </li>
-                <li>
-                    <a href="contact.html">contact</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+ 
     
+    <!-- Skip Navigation for Accessibility -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="header-wrapper">
+            <h1 class="site-title">Organic Moringa Marketplace</h1>
+            <!-- Main Navigation -->
+            <nav class="primary-nav" aria-label="Main Navigation">
+                <ul class="nav-list">
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="about.html">About</a></li>
+                  <li><a href="contact.html">Contact</a></li>
+                  <li><a href="cart.html" >Cart</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+        <!-- Product Listing Section -->
+        <section id="home" class="section active" aria-labelledby="products-heading">
+            <h2 id="products-heading" class="section-heading">Featured Products</h2>
+            <div id="product-list" class="product-grid" role="list" aria-live="polite">
+                <div class="loading-state">Loading products...</div>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/script.js" defer></script>
 </body>
 </html>

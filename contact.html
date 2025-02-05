@@ -1,28 +1,53 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>project</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/contact.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Online marketplace for organic Moringa products and natural remedies">
+  <title>Organic Moringa Marketplace | Contact</title>
+  <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul class="nav-items">
-                <li>
-                    <a href="index.html">home</a>
-                </li>
-                <li>
-                    <a href="about.html">about</a>
-                </li>
-                <li>
-                    <a href="contact.html">contact</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
-    
+  <!-- Skip Navigation for Accessibility -->
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+  <!-- Site Header -->
+  <header class="site-header">
+    <div class="header-wrapper">
+      <h1 class="site-title">Organic Moringa Marketplace</h1>
+      <!-- Main Navigation -->
+      <nav class="primary-nav" aria-label="Main Navigation">
+        <ul class="nav-list">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="cart.html" >Cart </a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <!-- Main Content -->
+  <main id="main-content" class="main-content">
+    <!-- Contact Section -->
+    <section id="contact" class="section" aria-labelledby="contact-heading">
+      <h2 id="contact-heading" class="section-heading">Get in Touch</h2>
+      <form id="contact-form" class="contact-form" novalidate>
+        <div class="form-group">
+          <label for="name">Full Name:</label>
+          <input type="text" id="name" name="name" required autocomplete="name" aria-required="true">
+        </div>
+        <div class="form-group">
+          <label for="email">Email Address:</label>
+          <input type="email" id="email" name="email" required autocomplete="email" aria-required="true">
+        </div>
+        <div class="form-group">
+          <label for="message">Your Message:</label>
+          <textarea id="message" name="message" rows="5" required aria-required="true"></textarea>
+        </div>
+        <button type="submit" class="submit-btn">Send Message</button>
+      </form>
+      <div id="contact-response" class="form-response" aria-live="polite"></div>
+    </section>
+  </main>
+  <script src="js/script.js"></script>
 </body>
 </html>

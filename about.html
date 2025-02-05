@@ -3,26 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>project</title>
-    <link rel="stylesheet" href="/css/style.css">
-    <script src="/js/about.js"></script>
+    <meta name="description" content="Online marketplace for organic Moringa products and natural remedies">
+    <title>About Us | Organic Moringa Marketplace</title>
+    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <header>
-        <nav>
-            <ul class="nav-items">
-                <li>
-                    <a href="index.html">home</a>
-                </li>
-                <li>
-                    <a href="about.html">about</a>
-                </li>
-                <li>
-                    <a href="contact.html">contact</a>
-                </li>
-            </ul>
-        </nav>
-    </header>
+  
     
+    <!-- Skip Navigation for Accessibility -->
+    <a class="skip-link" href="#main-content">Skip to main content</a>
+    <!-- Site Header -->
+    <header class="site-header">
+        <div class="header-wrapper">
+            <h1 class="site-title">Organic Moringa Marketplace</h1>
+            <!-- Main Navigation -->
+            <nav class="primary-nav" aria-label="Main Navigation">
+                <ul class="nav-list">
+                  <li><a href="index.html">Home</a></li>
+                  <li><a href="about.html">About</a></li>
+                  <li><a href="contact.html">Contact</a></li>
+                  <li><a href="cart.html">Cart </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- About Section -->
+    <main id="main-content" class="main-content">
+        <section id="about" class="section active" aria-labelledby="about-heading">
+            <h2 id="about-heading" class="section-heading">About Our Marketplace</h2>
+            <div class="about-content">
+                <p class="lead-text">Welcome to the Organic Moringa Marketplace!</p>
+                <p>We specialize in ethically sourced, organic Moringa products including cold-pressed oils, nutrient-rich powders, and artisanal teas. Our platform connects you directly with sustainable farms in Southeast Asia.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/script.js" defer></script>
 </body>
 </html>
