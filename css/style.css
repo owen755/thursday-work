@@ -166,11 +166,13 @@ body {
 /* Cart Styles */
 .cart-items {
   margin-top: 2rem;
+  background-color: #f4c430;
 }
 
 .empty-cart {
   text-align: center;
   color: #666;
+  background-color: #f4c430;
 }
 
 /* Responsive Design */

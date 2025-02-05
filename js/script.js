@@ -133,10 +133,12 @@ class Marketplace {
         <h3>Payment Method</h3>
         <form id="payment-method-form">
          <label>
-            mpesa:
+            mpesa phone number:
             <input type="till 123456" name="number" required>
           </label>
-
+          <button type="submit">Pay Now</button>
+          </form>
+          <form>
           <label>
             Card Number:
             <input type="text" name="cardNumber" required>
