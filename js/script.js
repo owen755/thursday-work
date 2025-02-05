@@ -9,7 +9,7 @@ class Marketplace {
     this.loadProducts();
     this.setupForm();
     this.updateCartCount();
-    this.renderCartOnPageLoad(); // New addition to ensure cart is rendered on page load
+    this.renderCartOnPageLoad(); // Renders cart on page load if items exist
   }
 
   setupNavigation() {
@@ -81,11 +81,13 @@ class Marketplace {
     this.cart.push(product);
     localStorage.setItem('cart', JSON.stringify(this.cart));
     this.updateCartCount();
+    this.showNotification(`${product.name} has been added to your cart.`);
     this.showCart();
   }
 
   getProductById(productId) {
-    // In real implementation, fetch from API
+    // In real implementation, fetch from API or data source.
+    // For simulation, we return a dummy product based on the id.
     return {
       id: productId,
       name: `Product ${productId}`,
@@ -94,7 +96,10 @@ class Marketplace {
   }
 
   updateCartCount() {
-    document.querySelector('.cart-count').textContent = `(${this.cart.length})`;
+    const cartCountElem = document.querySelector('.cart-count');
+    if (cartCountElem) {
+      cartCountElem.textContent = `(${this.cart.length})`;
+    }
   }
 
   showCart() {
@@ -112,37 +117,99 @@ class Marketplace {
 
     cartContents.innerHTML = `
       <ul class="cart-list">
-        ${this.cart.map(item => `
+        ${this.cart.map((item, index) => `
           <li class="cart-item">
             <span>${item.name}</span>
             <span>$${item.price.toFixed(2)}</span>
+            <button class="remove-item" data-index="${index}">Remove</button>
           </li>
         `).join('')}
       </ul>
       <div class="cart-total">
         Total: $${this.cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
       </div>
+      <button id="proceed-payment">Proceed to Payment</button>
+      <div id="payment-form" style="display:none; margin-top:20px;">
+        <h3>Payment Method</h3>
+        <form id="payment-method-form">
+         <label>
+            mpesa:
+            <input type="till 123456" name="number" required>
+          </label>
+
+          <label>
+            Card Number:
+            <input type="text" name="cardNumber" required>
+          </label>
+          <label>
+            Expiry Date:
+            <input type="text" name="expiryDate" placeholder="MM/YY" required>
+          </label>
+          <label>
+            CVV:
+            <input type="text" name="cvv" required>
+          </label>
+          <button type="submit">Pay Now</button>
+        </form>
+        <div id="payment-response"></div>
+      </div>
     `;
+
+    // Add event listeners for remove buttons
+    document.querySelectorAll('.remove-item').forEach(button => {
+      button.addEventListener('click', (e) => {
+        const index = e.target.dataset.index;
+        this.removeFromCart(index);
+      });
+    });
+
+    // Payment processing: show the payment form when "Proceed to Payment" is clicked.
+    document.getElementById('proceed-payment').addEventListener('click', () => {
+      document.getElementById('payment-form').style.display = 'block';
+    });
+
+    // Payment form submission simulation.
+    const paymentMethodForm = document.getElementById('payment-method-form');
+    paymentMethodForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      // Here you would integrate with a payment gateway.
+      // For simulation, we simply show a success message.
+      document.getElementById('payment-response').textContent = 'Payment processed successfully!';
+      // Optionally, you might clear the cart after payment.
+      this.cart = [];
+      localStorage.setItem('cart', JSON.stringify(this.cart));
+      this.updateCartCount();
+      this.renderCart();
+    });
+  }
+
+  removeFromCart(index) {
+    this.cart.splice(index, 1);
+    localStorage.setItem('cart', JSON.stringify(this.cart));
+    this.updateCartCount();
+    this.renderCart();
   }
 
   setupForm() {
     const form = document.getElementById('contact-form');
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const formData = new FormData(form);
-      
-      try {
-        await this.submitForm(formData);
-        this.showFormResponse('Message sent successfully!', 'success');
-        form.reset();
-      } catch (error) {
-        this.showFormResponse('Failed to send message. Please try again.', 'error');
-      }
-    });
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        
+        try {
+          await this.submitForm(formData);
+          this.showFormResponse('Message sent successfully!', 'success');
+          form.reset();
+        } catch (error) {
+          this.showFormResponse('Failed to send message. Please try again.', 'error');
+        }
+      });
+    }
   }
 
   async submitForm(formData) {
-    // Simulated API call
+    // Simulated API call for form submission.
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         Math.random() > 0.2 ? resolve() : reject();
@@ -165,7 +232,20 @@ class Marketplace {
     }
   }
 
-  // New function to render the cart on page load if it's already in localStorage
+  // Displays a notification for a few seconds.
+  showNotification(message) {
+    let notification = document.createElement('div');
+    notification.className = 'notification';
+    notification.textContent = message;
+    document.body.appendChild(notification);
+    
+    // Automatically remove after 3 seconds.
+    setTimeout(() => {
+      notification.remove();
+    }, 3000);
+  }
+
+  // Renders the cart on page load if items exist.
   renderCartOnPageLoad() {
     if (document.getElementById('cart-contents') && this.cart.length > 0) {
       this.renderCart();
@@ -176,11 +256,4 @@ class Marketplace {
 // Initialize the Marketplace when the window loads.
 window.addEventListener('load', () => {
   new Marketplace();
-});
-
-// Ensure cart is rendered if available when the cart section is visible
-window.addEventListener('load', () => {
-  if (document.getElementById('cart-contents')) {
-    new Marketplace().showCart();
-  }
 });

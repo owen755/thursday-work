@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,18 +10,17 @@
 </head>
 <body>
     
-                <ul class="nav-list">
-                  <li><a href="index.html">Home</a></li>
-                  <li><a href="about.html">About</a></li>
-                  <li><a href="contact.html">Contact</a></li>
-                  <li><a href="cart.html">Cart </a></li>
-
-    <section id="contact" class="section" aria-labelledby="contact-heading">
-                    
-                   
-                </ul>
-            </nav>
-        </div>
+    <header>
+        <nav>
+            <ul class="nav-list">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="index.html#cart">
+                    Cart <span class="cart-count">(0)</span>
+                  </a></li>
+            </ul>
+        </nav>
     </header>
 
     <!-- Shopping Cart Section -->
@@ -30,6 +30,9 @@
             <div id="cart-contents" class="cart-items" role="region" aria-live="polite">
                 <p class="empty-cart">Your cart is currently empty.</p>
             </div>
+            
+          </div>
+          
         </section>
     </main>
 
