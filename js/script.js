@@ -9,7 +9,7 @@ class Marketplace {
     this.loadProducts();
     this.setupForm();
     this.updateCartCount();
-    this.renderCartOnPageLoad(); // Renders cart on page load if items exist
+    this.renderCartOnPageLoad(); // Renders the cart on page load if items exist
   }
 
   setupNavigation() {
@@ -46,13 +46,31 @@ class Marketplace {
   }
 
   async fetchProducts() {
-    // Simulated API response
+    // Simulated API response including an image property.
     return new Promise(resolve => {
       setTimeout(() => {
         resolve([
-          { id: 1, name: 'Organic Moringa Powder', price: 19.99, description: 'Rich in antioxidants and nutrients' },
-          { id: 2, name: 'Cold-Pressed Moringa Oil', price: 29.99, description: 'Pure natural skincare oil' },
-          { id: 3, name: 'Moringa Herbal Tea', price: 12.99, description: 'Detoxifying and energizing blend' }
+          { 
+            id: 1, 
+            name: 'haitian fried chicken', 
+            price: 1999, 
+            description: 'Rich in protein',
+            image: 'Haitian Fried Chicken.jpg'
+          },
+          { 
+            id: 2, 
+            name: 'Cold-Pressed Moringa Oil', 
+            price: 29.99, 
+            description: 'Pure natural skincare oil',
+            image: 'https://via.placeholder.com/150?text=Moringa+Oil'
+          },
+          { 
+            id: 3, 
+            name: 'hamburger', 
+            price: 120, 
+            description: 'delicious fast food at a good price',
+            image: 'The Truth About McDonalds Big Mac Sauce - Mashed.jpg'
+          }
         ]);
       }, 500);
     });
@@ -62,21 +80,24 @@ class Marketplace {
     const productList = document.getElementById('product-list');
     productList.innerHTML = products.map(product => `
       <div class="product-card">
+        <img src="${product.image}" alt="${product.name}" class="product-image">
         <h3>${product.name}</h3>
         <p>${product.description}</p>
-        <p class="price">$${product.price.toFixed(2)}</p>
+        <p class="price">Ksh ${product.price.toFixed(2)}</p>
         <button type="button" class="add-to-cart" data-id="${product.id}">Add to Cart</button>
       </div>
     `).join('');
 
-    productList.addEventListener('click', (e) => {
-      if (e.target.classList.contains('add-to-cart')) {
+    // Add event listeners for all "Add to Cart" buttons.
+    document.querySelectorAll('.add-to-cart').forEach(button => {
+      button.addEventListener('click', (e) => {
         this.addToCart(e.target.dataset.id);
-      }
+      });
     });
   }
 
   addToCart(productId) {
+    // Look up the product with the given id.
     const product = this.getProductById(productId);
     this.cart.push(product);
     localStorage.setItem('cart', JSON.stringify(this.cart));
@@ -86,12 +107,29 @@ class Marketplace {
   }
 
   getProductById(productId) {
-    // In real implementation, fetch from API or data source.
-    // For simulation, we return a dummy product based on the id.
+    // In a real implementation, this would fetch product details from an API.
+    // For simulation, we return a dummy product. Here, we also simulate an image URL.
+    const images = {
+      1: 'https://via.placeholder.com/150?text=haitian fried chicken',
+      2: 'https://via.placeholder.com/150?text=hamburger',
+      3: 'https://via.placeholder.com/150?text=Moringa+Tea'
+    };
+    const names = {
+      1: 'haitian fried chicken',
+      2: 'hamburger',
+      3: 'Moringa Herbal Tea'
+    };
+    const prices = {
+      1: 1999,
+      2: 120,
+      3: 12.99
+    };
+
     return {
       id: productId,
-      name: `Product ${productId}`,
-      price: Number(productId) * 10
+      name: names[productId] || `Product ${productId}`,
+      price: prices[productId] || (Number(productId) * 10),
+      image: images[productId] || 'https://via.placeholder.com/150'
     };
   }
 
@@ -119,26 +157,28 @@ class Marketplace {
       <ul class="cart-list">
         ${this.cart.map((item, index) => `
           <li class="cart-item">
+            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
             <span>${item.name}</span>
-            <span>$${item.price.toFixed(2)}</span>
+            <span>Ksh ${item.price.toFixed(2)}</span>
             <button class="remove-item" data-index="${index}">Remove</button>
           </li>
         `).join('')}
       </ul>
       <div class="cart-total">
-        Total: $${this.cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
+        Total: Ksh ${this.cart.reduce((sum, item) => sum + item.price, 0).toFixed(2)}
       </div>
       <button id="proceed-payment">Proceed to Payment</button>
       <div id="payment-form" style="display:none; margin-top:20px;">
         <h3>Payment Method</h3>
         <form id="payment-method-form">
-         <label>
-            mpesa phone number:
-            <input type="till 123456" name="number" required>
-          </label>
-          <button type="submit">Pay Now</button>
-          </form>
-          <form>
+        <label>
+          Payment Method:
+          <select name="paymentMethod" id="paymentMethod">
+            <option value="card">Credit Card</option>
+            <option value="mpesa">MPesa</option>
+          </select>
+        </label>
+        <div id="card-fields">
           <label>
             Card Number:
             <input type="text" name="cardNumber" required>
@@ -151,13 +191,24 @@ class Marketplace {
             CVV:
             <input type="text" name="cvv" required>
           </label>
-          <button type="submit">Pay Now</button>
+        </div>
+         <button type="submit">Pay Now</button>
+       
         </form>
-        <div id="payment-response"></div>
-      </div>
+        <form>
+        <div id="mpesa-fields"> 
+          <label>
+            MPesa Phone Number:
+            <input type="text" name="mpesaNumber" placeholder="07XXXXXXXX" required>
+          </label>
+        </div>
+        <button type="submit">Pay Now</button>
+      </form>
+      <div id="payment-response"></div>
+    </div>
     `;
 
-    // Add event listeners for remove buttons
+    // Attach event listeners for remove buttons.
     document.querySelectorAll('.remove-item').forEach(button => {
       button.addEventListener('click', (e) => {
         const index = e.target.dataset.index;
@@ -165,7 +216,7 @@ class Marketplace {
       });
     });
 
-    // Payment processing: show the payment form when "Proceed to Payment" is clicked.
+    // Show payment form when "Proceed to Payment" is clicked.
     document.getElementById('proceed-payment').addEventListener('click', () => {
       document.getElementById('payment-form').style.display = 'block';
     });
@@ -174,10 +225,9 @@ class Marketplace {
     const paymentMethodForm = document.getElementById('payment-method-form');
     paymentMethodForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      // Here you would integrate with a payment gateway.
-      // For simulation, we simply show a success message.
+      // Simulate payment processing.
       document.getElementById('payment-response').textContent = 'Payment processed successfully!';
-      // Optionally, you might clear the cart after payment.
+      // Optionally clear the cart after payment.
       this.cart = [];
       localStorage.setItem('cart', JSON.stringify(this.cart));
       this.updateCartCount();
@@ -198,7 +248,6 @@ class Marketplace {
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
         const formData = new FormData(form);
-        
         try {
           await this.submitForm(formData);
           this.showFormResponse('Message sent successfully!', 'success');
@@ -211,7 +260,6 @@ class Marketplace {
   }
 
   async submitForm(formData) {
-    // Simulated API call for form submission.
     return new Promise((resolve, reject) => {
       setTimeout(() => {
         Math.random() > 0.2 ? resolve() : reject();
@@ -234,14 +282,12 @@ class Marketplace {
     }
   }
 
-  // Displays a notification for a few seconds.
+  // Displays a temporary notification.
   showNotification(message) {
-    let notification = document.createElement('div');
+    const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
     document.body.appendChild(notification);
-    
-    // Automatically remove after 3 seconds.
     setTimeout(() => {
       notification.remove();
     }, 3000);
